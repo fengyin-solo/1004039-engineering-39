@@ -6,9 +6,14 @@
   "repoKind": "frontend-only",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/contractor-pipeline.mjs all",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "contractor:prepare": "node scripts/contractor-pipeline.mjs prepare",
+    "contractor:validate": "node scripts/contractor-pipeline.mjs validate",
+    "contractor:pipeline": "node scripts/contractor-pipeline.mjs all",
+    "test": "node --test test/"
   },
   "dependencies": {
     "pinia": "^2.1.7",

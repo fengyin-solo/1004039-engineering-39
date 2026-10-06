@@ -1,0 +1,68 @@
+{
+  "moduleKey": "contractor",
+  "fields": {
+    "code": "队伍编号",
+    "name": "队伍名称",
+    "qualification": "资质等级",
+    "enterprise": "所属企业",
+    "certificate": "特种作业证"
+  },
+  "assignQualification": {
+    "grade": "三级",
+    "label": "市政公用工程施工总承包三级及以上"
+  },
+  "qualificationGrades": [
+    { "name": "特级", "rank": 4 },
+    { "name": "一级", "rank": 3 },
+    { "name": "二级", "rank": 2 },
+    { "name": "三级", "rank": 1 }
+  ],
+  "enterprises": [
+    { "name": "宁安市政工程有限公司", "grades": ["一级", "二级", "三级"] },
+    { "name": "甬城管网建设集团", "grades": ["二级", "三级"] },
+    { "name": "江堤市政养护有限公司", "grades": ["三级"] },
+    { "name": "宏图劳务分包有限公司", "grades": [] }
+  ],
+  "certificates": {
+    "required": ["有限空间作业操作证"],
+    "catalog": ["有限空间作业操作证", "焊接与热切割作业操作证", "高处作业操作证", "低压电工作业操作证"]
+  },
+  "conditions": {
+    "qualification-registered": "资质等级已登记且在资质目录内",
+    "assign-qualification-grade": "资质等级达到市政公用工程施工总承包三级及以上",
+    "enterprise-registered": "所属企业已登记",
+    "enterprise-qualification": "所属企业持有队伍填报资质等级的施工资质（证企一致）",
+    "required-certificates": "持有所需特种作业证（有限空间作业操作证）",
+    "certificates-valid": "特种作业证均在有效期内（证号:有效期YYYY-MM-DD）"
+  },
+  "stages": {
+    "record": {
+      "label": "审核备案",
+      "conditions": [
+        "qualification-registered",
+        "enterprise-registered",
+        "enterprise-qualification"
+      ]
+    },
+    "assign": {
+      "label": "安排作业",
+      "conditions": [
+        "qualification-registered",
+        "assign-qualification-grade",
+        "enterprise-registered",
+        "enterprise-qualification",
+        "required-certificates",
+        "certificates-valid"
+      ]
+    }
+  },
+  "statusFlows": [
+    { "status": "待审核", "action": "审核备案", "stage": "record", "target": "已备案", "blocking": true },
+    { "status": "已备案", "action": "安排作业", "stage": "assign", "target": "作业中", "blocking": true },
+    { "status": "作业中", "stage": "assign", "blocking": false, "note": "作业中队伍不卡构建，仅给预警，状态本身不受样例准备影响" },
+    { "status": "已清退", "stage": null, "blocking": false, "note": "已清退队伍不再校验资质链路" }
+  ],
+  "prepare": {
+    "protectedStatuses": ["已备案", "作业中"]
+  }
+}

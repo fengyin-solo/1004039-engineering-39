@@ -1,4 +1,9 @@
+import contractorSamples from './contractor-samples.json'
 import type { EntryRow } from './types'
+
+// 施工队伍样例由 scripts/contractor-pipeline.mjs 的 prepare 环节生成，
+// 改样例规约后跑 npm run contractor:prepare，不要手工改 JSON。
+const contractorSeedRows = contractorSamples as unknown as EntryRow[]
 
 // 示例数据：首次打开时播种，之后浏览器里的改动优先，重置才会回到这份。
 export const SEED_ROWS: Record<string, EntryRow[]> = {
@@ -750,48 +755,5 @@ export const SEED_ROWS: Record<string, EntryRow[]> = {
       "设备状态": "监测设备样例3"
     }
   ],
-  "contractor": [
-    {
-      "id": 1,
-      "status": "待审核",
-      "pending": true,
-      "abnormal": false,
-      "队伍编号": "CONT-0001",
-      "队伍名称": "施工队伍样例1",
-      "资质等级": "施工队伍样例1",
-      "所属企业": "施工队伍样例1",
-      "联系人": "施工队伍样例1",
-      "联系电话": "13800000001",
-      "特种作业证": "施工队伍样例1",
-      "队伍状态": "施工队伍样例1"
-    },
-    {
-      "id": 2,
-      "status": "已备案",
-      "pending": true,
-      "abnormal": true,
-      "队伍编号": "CONT-0002",
-      "队伍名称": "施工队伍样例2",
-      "资质等级": "施工队伍样例2",
-      "所属企业": "施工队伍样例2",
-      "联系人": "施工队伍样例2",
-      "联系电话": "13800000002",
-      "特种作业证": "施工队伍样例2",
-      "队伍状态": "施工队伍样例2"
-    },
-    {
-      "id": 3,
-      "status": "作业中",
-      "pending": false,
-      "abnormal": false,
-      "队伍编号": "CONT-0003",
-      "队伍名称": "施工队伍样例3",
-      "资质等级": "施工队伍样例3",
-      "所属企业": "施工队伍样例3",
-      "联系人": "施工队伍样例3",
-      "联系电话": "13800000003",
-      "特种作业证": "施工队伍样例3",
-      "队伍状态": "施工队伍样例3"
-    }
-  ],
+  "contractor": contractorSeedRows,
 }

@@ -69,3 +69,15 @@ npm run build
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
 - 想回到初始数据：清掉浏览器里 `underground-pipeline-inspection:entries` 这一项，或调用 `resetModule(模块)`。
+
+## 施工队伍资质校验
+
+`npm run build` 前会自动执行「样例准备 → 构建前校验」流水线：施工队伍的资质等级、特种作业证、
+所属企业与作业状态链路（待审核→已备案→作业中→已清退）不过校验就不打包，并报出是哪类队伍、
+哪项条件不满足。样例准备幂等（重复执行无重复样例），已备案/作业中队伍原样保留，失败可单独重跑。
+
+- 链路说明与新增资质类型指引：`frontend/docs/contractor-qualification.md`
+- 常用命令（均在 `frontend/` 下）：
+  - `npm run contractor:prepare`：只重跑样例准备
+  - `npm run contractor:validate`：只重跑构建前校验（修复后单独重跑失败环节）
+  - `npm test`：规则引擎与流水线测试

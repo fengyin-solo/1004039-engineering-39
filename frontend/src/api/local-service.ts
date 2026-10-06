@@ -1,4 +1,5 @@
 import { MODULE_BY_KEY } from '@/data/modules'
+import { guardContractorAction } from '@/data/contractor'
 import { allRows, listRows, resetRows, saveRows } from '@/data/local-store'
 import type { ActionResult, EntryRow, ModuleMeta, OverviewResult, PageResult } from '@/data/types'
 
@@ -42,6 +43,14 @@ export function runAction(key: string, id: number, action: string): ActionResult
   const current = String(rows[index].status)
   if (current === target) {
     return { ok: false, message: `${meta.entity}已经是「${target}」，不用重复操作` }
+  }
+  // 施工队伍的「审核备案 / 安排作业」先走资质链路规则引擎，与构建前校验同源：
+  // 条件不满足时直接拦下，并说明是哪项条件，页面不会再出现能点却安排不了作业的队伍。
+  if (meta.key === 'contractor') {
+    const blocked = guardContractorAction(rows[index], action)
+    if (blocked) {
+      return blocked
+    }
   }
   const lastStatus = meta.statuses[meta.statuses.length - 1]
   const updated: EntryRow = {

@@ -85,8 +85,6 @@ const meta = moduleMeta('contractor')
 const columns = ["队伍编号", "队伍名称", "资质等级", "所属企业", "联系人", "联系电话", "特种作业证", "队伍状态"]
 const actions = ["审核备案", "安排作业", "清退队伍"]
 const statuses = ["待审核", "已备案", "作业中", "已清退"]
-const stats = [{"label": "备案队伍", "value": 0}, {"label": "作业中队伍", "value": 0}, {"label": "待审核队伍", "value": 0}]
-
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
@@ -98,6 +96,11 @@ const statusSummary = computed(() =>
     count: rows.value.filter((row) => String(row.status) === status).length,
   })),
 )
+const stats = computed(() => [
+  { label: '备案队伍', value: statusSummary.value.find((item) => item.status === '已备案')?.count ?? 0 },
+  { label: '作业中队伍', value: statusSummary.value.find((item) => item.status === '作业中')?.count ?? 0 },
+  { label: '待审核队伍', value: statusSummary.value.find((item) => item.status === '待审核')?.count ?? 0 },
+])
 
 function resetFilters() {
   filters.value = {}
