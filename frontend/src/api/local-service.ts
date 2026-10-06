@@ -1,4 +1,5 @@
 import { MODULE_BY_KEY } from '@/data/modules'
+import { contractorTransition } from '@/data/contractor/domain'
 import { allRows, listRows, resetRows, saveRows } from '@/data/local-store'
 import type { ActionResult, EntryRow, ModuleMeta, OverviewResult, PageResult } from '@/data/types'
 
@@ -40,7 +41,13 @@ export function runAction(key: string, id: number, action: string): ActionResult
     return { ok: false, message: `没有找到编号为 ${id} 的${meta.entity}` }
   }
   const current = String(rows[index].status)
-  if (current === target) {
+  if (key === 'contractor') {
+    // 施工队伍走资质链路门禁：企业名录 → 资质等级 → 特种作业证，规则在 data/contractor/domain.ts。
+    const decision = contractorTransition(action, current, rows[index])
+    if (!decision.allowed) {
+      return { ok: false, message: decision.reason }
+    }
+  } else if (current === target) {
     return { ok: false, message: `${meta.entity}已经是「${target}」，不用重复操作` }
   }
   const lastStatus = meta.statuses[meta.statuses.length - 1]

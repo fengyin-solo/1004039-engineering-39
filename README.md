@@ -68,4 +68,8 @@ npm run build
 - 字段、状态、动作与流转目标集中在 `frontend/src/data/modules.ts`；示例数据在
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
+- 施工队伍（contractor）的资质等级、特种作业证、所属企业与作业状态链路有专门规则源
+  `frontend/src/data/contractor/domain.ts`，`npm run build` 前会自动执行
+  「样例准备 → 构建前校验」流水线，失败即中止构建；规则、命令与失败排查见
+  [`docs/contractor-qualification-pipeline.md`](docs/contractor-qualification-pipeline.md)。
 - 想回到初始数据：清掉浏览器里 `underground-pipeline-inspection:entries` 这一项，或调用 `resetModule(模块)`。

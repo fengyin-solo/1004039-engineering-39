@@ -85,3 +85,6 @@ desktop.ini
 *.db
 *.pid
 *.seed
+
+# ===== 施工队伍流水线运行状态（可删除，重跑自动重建）=====
+frontend/.contractor-pipeline-state.json
